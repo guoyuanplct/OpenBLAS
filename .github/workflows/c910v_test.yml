@@ -86,7 +86,7 @@ jobs:
           run_with_retry() {
               local cmd="$1"
               local timeout=30
-              local retries=5
+              local retries=10
               for ((i=1; i<=retries; i++)); do
                   if timeout --preserve-status $timeout $cmd; then
                       return 0
