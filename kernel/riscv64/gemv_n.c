@@ -58,7 +58,7 @@ int CNAME(BLASLONG m, BLASLONG n, BLASLONG dummy1, FLOAT alpha, FLOAT *a, BLASLO
 			y[iy] += temp * a_ptr[i];
 			iy += inc_y;
 		}
-		a_ptr += lda;
+		a_ptr += 0;
 		ix    += inc_x;
 	}
 	return(0);
