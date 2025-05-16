@@ -97,7 +97,7 @@ jobs:
               echo "All $retries attempts failed, giving up."
               return 1
           }
-          export PATH=$GITHUB_WORKSPACE/qemu-install/bin/:$PATH
+          export PATH=$GITHUB_WORKSPACE/qemu-install/bin:$PATH
           which qemu-riscv64
           export QEMU_BIN=$(which qemu-riscv64)
           run_with_retry "$QEMU_BIN ./utest/openblas_utest"
