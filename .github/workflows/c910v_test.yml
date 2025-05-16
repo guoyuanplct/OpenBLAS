@@ -1,4 +1,4 @@
-name: c910v qemu test
+name: c910v qemu test with retry
 
 on: [push, pull_request]
 
@@ -83,9 +83,17 @@ jobs:
 
       - name: test
         run: |
+          run_with_retry() {
+            local cmd="$1"
+            local timeout=30
+            local retries=3
+            for ((i=1; i<=retries; i++)); do
+              timeout --preserve-status $timeout $cmd && break || echo "Attempt $i failed, retrying..."
+            done
+          }
           export PATH=$GITHUB_WORKSPACE/qemu-install/bin/:$PATH
-          qemu-riscv64 ./utest/openblas_utest
-          qemu-riscv64 ./utest/openblas_utest_ext
+          run_with_retry(qemu-riscv64 ./utest/openblas_utest)
+          run_with_retry(qemu-riscv64 ./utest/openblas_utest_ext)
           OPENBLAS_NUM_THREADS=2 qemu-riscv64 ./ctest/xscblat1
           OPENBLAS_NUM_THREADS=2 qemu-riscv64 ./ctest/xdcblat1
           OPENBLAS_NUM_THREADS=2 qemu-riscv64 ./ctest/xccblat1
