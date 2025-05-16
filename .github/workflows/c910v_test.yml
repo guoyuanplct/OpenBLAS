@@ -92,8 +92,8 @@ jobs:
             done
           }
           export PATH=$GITHUB_WORKSPACE/qemu-install/bin/:$PATH
-          run_with_retry(qemu-riscv64 ./utest/openblas_utest)
-          run_with_retry(qemu-riscv64 ./utest/openblas_utest_ext)
+          run_with_retry “qemu-riscv64 ./utest/openblas_utest”
+          run_with_retry ”qemu-riscv64 ./utest/openblas_utest_ext“
           OPENBLAS_NUM_THREADS=2 qemu-riscv64 ./ctest/xscblat1
           OPENBLAS_NUM_THREADS=2 qemu-riscv64 ./ctest/xdcblat1
           OPENBLAS_NUM_THREADS=2 qemu-riscv64 ./ctest/xccblat1
