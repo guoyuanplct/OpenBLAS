@@ -84,16 +84,25 @@ jobs:
       - name: test
         run: |
           run_with_retry() {
-            local cmd="$1"
-            local timeout=30
-            local retries=3
-            for ((i=1; i<=retries; i++)); do
-              timeout --preserve-status $timeout $cmd && break || echo "Attempt $i failed, retrying..."
-            done
+              local cmd="$1"
+              local timeout=30
+              local retries=5
+              for ((i=1; i<=retries; i++)); do
+                  if timeout --preserve-status $timeout $cmd; then
+                      return 0
+                  else
+                      echo "Attempt $i failed, retrying..."
+                  fi
+              done
+              echo "All $retries attempts failed, giving up."
+              return 1
           }
           export PATH=$GITHUB_WORKSPACE/qemu-install/bin/:$PATH
-          run_with_retry “$GITHUB_WORKSPACE/qemu-install/bin/qemu-riscv64 ./utest/openblas_utest”
-          run_with_retry ”$GITHUB_WORKSPACE/qemu-install/bin/qemu-riscv64 ./utest/openblas_utest_ext“
+          which qemu-riscv64
+          export QEMU_BIN=$(which qemu-riscv64)
+          run_with_retry "$QEMU_BIN ./utest/openblas_utest"
+          run_with_retry ”$QEMU_BIN ./utest/openblas_utest_ext“
+
           OPENBLAS_NUM_THREADS=2 qemu-riscv64 ./ctest/xscblat1
           OPENBLAS_NUM_THREADS=2 qemu-riscv64 ./ctest/xdcblat1
           OPENBLAS_NUM_THREADS=2 qemu-riscv64 ./ctest/xccblat1
