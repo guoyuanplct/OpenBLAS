@@ -101,7 +101,7 @@ jobs:
           which qemu-riscv64
           export QEMU_BIN=$(which qemu-riscv64)
           run_with_retry "$QEMU_BIN ./utest/openblas_utest"
-          run_with_retry ”$QEMU_BIN ./utest/openblas_utest_ext“
+          run_with_retry "$QEMU_BIN ./utest/openblas_utest_ext"
 
           OPENBLAS_NUM_THREADS=2 qemu-riscv64 ./ctest/xscblat1
           OPENBLAS_NUM_THREADS=2 qemu-riscv64 ./ctest/xdcblat1
