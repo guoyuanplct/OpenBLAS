@@ -92,7 +92,7 @@ int CNAME(BLASLONG rows, BLASLONG cols, FLOAT alpha_r, FLOAT alpha_i, FLOAT *a, 
 			bptr_v0 = VFMUL_VF_FLOAT(  aptr_v0,alpha_r, gvl);
 			bptr_v0 = VFNMSACVF_FLOAT(bptr_v0, alpha_i, aptr_v1, gvl);
 			vb = VSET_VX2(vb, 0, bptr_v0);
-			vb = VSET_VX2(vb, 1, bptr_v1);
+			
 
 			ia += gvl * 2 ;
 
