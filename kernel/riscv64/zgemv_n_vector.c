@@ -153,7 +153,7 @@ int CNAME(BLASLONG m, BLASLONG n, BLASLONG dummy1, FLOAT alpha_r, FLOAT alpha_i,
                         temp_iv = VFMUL_VF_FLOAT(x_v0, alpha_i, 2);
                         temp_iv = VFMACCVF_FLOAT(temp_iv, alpha_r, x_v1, 2);
                         VSEV_FLOAT(&temp_rr[2], temp_rv, 2);
-                        VSEV_FLOAT(&temp_ii[2], temp_iv, 2);
+                        
 
 #else
                         //  temp_rr[0] = alpha_r * x[ix] + alpha_i * x[ix + 1];
@@ -298,7 +298,7 @@ int CNAME(BLASLONG m, BLASLONG n, BLASLONG dummy1, FLOAT alpha_r, FLOAT alpha_i,
                 }
 
                 VSSEV_FLOAT(&y[iy], stride_y, vy0, gvl);
-                VSSEV_FLOAT(&y[iy + 1], stride_y, vy1, gvl);
+                
                 j += gvl * 2;
                 iy += inc_yv  ;
         }
