@@ -87,15 +87,27 @@ jobs:
               local cmd="$1"
               local timeout=30
               local retries=10
+              local attempt=0
+
               for ((i=1; i<=retries; i++)); do
+                  attempt=$((i))
                   if timeout --preserve-status $timeout $cmd; then
+                      echo "Command succeeded on attempt $i."
                       return 0
                   else
-                      echo "Attempt $i failed, retrying..."
+                      local exit_code=$?
+                      if [ $exit_code -eq 124 ]; then
+                          echo "Attempt $i timed out (retrying...)"
+                      else
+                          echo "Attempt $i failed with exit code $exit_code. Aborting workflow."
+                          exit $exit_code 
+                      fi
                   fi
               done
               echo "All $retries attempts failed, giving up."
-              return 1
+              echo "Final failure was due to timeout."
+              echo "Aborting workflow."
+              exit $exit_code 
           }
           export PATH=$GITHUB_WORKSPACE/qemu-install/bin:$PATH
           which qemu-riscv64
